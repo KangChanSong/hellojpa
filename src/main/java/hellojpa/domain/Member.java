@@ -1,13 +1,13 @@
-package hellojpa;
+package hellojpa.domain;
+
+import hellojpa.RoleType;
 
 import javax.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 import static javax.persistence.EnumType.ORDINAL;
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity

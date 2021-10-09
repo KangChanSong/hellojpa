@@ -1,5 +1,8 @@
 package hellojpa;
 
+import hellojpa.domain.Member;
+import hellojpa.domain.Member2;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,7 +19,7 @@ public class JpaMain {
         tx.begin();
 
         try{
-            save(em);
+            saveMember2(em);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -24,6 +27,13 @@ public class JpaMain {
             em.close();
         }
         emf.close();
+    }
+
+    private static void saveMember2(EntityManager em){
+        Member2 member2 = new Member2();
+        member2.setId(1L);
+        member2.setUsername("asd");
+        em.persist(member2);
     }
 
     private static void save(EntityManager em){
