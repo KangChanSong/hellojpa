@@ -1,9 +1,11 @@
 package hellojpa;
 
-import net.bytebuddy.matcher.MethodReturnTypeMatcher;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
-import javax.persistence.*;
-import java.util.List;
+import static hellojpa.RoleType.ADMIN;
 
 public class JpaMain {
 
@@ -14,25 +16,23 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member = new Member(5L, "m5");
-            em.persist(member);
-
-            member.setName("chane");
-
+            save(em);
             tx.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             tx.rollback();
         } finally {
             em.close();
         }
-
         emf.close();
     }
 
-    private void persist(EntityManager em, Long id, String name){
+    private static void save(EntityManager em){
         Member member = new Member();
-        member.setId(id);
-        member.setName(name);
+        member.setId(1L);
+        member.setUsername("asd");
+        member.setAge(10);
+        member.setRoleType(ADMIN);
+
         em.persist(member);
     }
 }
