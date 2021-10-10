@@ -2,31 +2,22 @@ package hellojpa;
 
 import hellojpa.domain.Member;
 import hellojpa.domain.Member2;
+import util.QueryRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import java.util.function.Consumer;
+
 import static hellojpa.RoleType.ADMIN;
 
 public class JpaMain {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
+        QueryRunner.execute( em -> saveMember2(em));
 
-        try{
-            saveMember2(em);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-        } finally {
-            em.close();
-        }
-        emf.close();
     }
 
     private static void saveMember2(EntityManager em){
