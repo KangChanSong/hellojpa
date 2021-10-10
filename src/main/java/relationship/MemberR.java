@@ -1,18 +1,19 @@
 package relationship;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Member {
+public class MemberR {
 
     @Id @GeneratedValue
     private Long id;
 
     @Column(name = "USERNAME")
     private String username;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private TeamR team;
 
     public Long getId() {
         return id;
@@ -28,5 +29,13 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public TeamR getTeam() {
+        return team;
+    }
+
+    public void setTeam(TeamR team) {
+        this.team = team;
     }
 }
