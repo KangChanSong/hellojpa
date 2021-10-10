@@ -1,5 +1,6 @@
-package com.example.jpa.domain;
+package com.example.jpa.domain.Item;
 
+import com.example.jpa.domain.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
 @Entity
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
 
     @Id @GeneratedValue
     @Column(name=  "item_id")
@@ -18,6 +20,8 @@ public class Item {
     private int price;
     private int stockQuantity;
 
+
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
 }
+
