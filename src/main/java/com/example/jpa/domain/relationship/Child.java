@@ -7,14 +7,14 @@ import javax.persistence.*;
 
 @Getter @Setter
 @Entity
-public class A {
+public class Child {
 
     @Id @GeneratedValue
-    @Column(name = "a_id")
+    @Column(name = "child_id")
     private Long id;
+    private String name;
 
-    private String title;
-
-    @OneToOne(mappedBy = "a")
-    private B b;
+    @OneToOne(mappedBy = "child")
+    private Parent parent;
 }
+

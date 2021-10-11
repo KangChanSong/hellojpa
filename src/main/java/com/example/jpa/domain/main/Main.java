@@ -1,8 +1,9 @@
 package com.example.jpa.domain.main;
 
-import com.example.jpa.domain.relationship.A;
-import com.example.jpa.domain.relationship.B;
+import com.example.jpa.domain.relationship.Child;
+import com.example.jpa.domain.relationship.Parent;
 
+import javax.crypto.Cipher;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -15,16 +16,19 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        A a = new A();
-        a.setTitle("title");
-        em.persist(a);
+        Parent parent = new Parent();
+        parent.setName("parent");
+        em.persist(parent);
 
-        B b = new B();
-        b.setA(a);
-        b.setContent("content");
-        em.persist(b);
+        Child child = new Child();
+        child.setName("child");
+        em.persist(child);
 
-        System.out.println("(b.getA().getId() == a.getId()) = " + (b.getA().getId() == a.getId()));
+        parent.setChild(child);
+        child.setParent(parent);
+
+        System.out.println("parent.getId() = " + parent.getId());
+        System.out.println("child.getId() = " + child.getId());
 
         tx.commit();
         em.close();
