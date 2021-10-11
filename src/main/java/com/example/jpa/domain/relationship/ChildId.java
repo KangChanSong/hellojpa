@@ -1,16 +1,17 @@
 package com.example.jpa.domain.relationship;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter @Setter
+@Embeddable
 public class ChildId implements Serializable {
 
-    private String parent;
+    private String parentId;
     private String id;
 
     @Override
@@ -18,11 +19,11 @@ public class ChildId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChildId childId = (ChildId) o;
-        return Objects.equals(parent, childId.parent) && Objects.equals(id, childId.id);
+        return Objects.equals(parentId, childId.parentId) && Objects.equals(id, childId.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(parent, id);
+        return Objects.hash(parentId, id);
     }
 }

@@ -7,18 +7,15 @@ import javax.persistence.*;
 
 @Getter @Setter
 @Entity
-@IdClass(ChildId.class)
 public class Child {
 
-    @Id
-    @Column(name = "child_id")
-    private String id;
+    @EmbeddedId
+    private ChildId id;
 
-    @Id
+    @MapsId("parentId")
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Parent parent;
 
     private String name;
-
 }
