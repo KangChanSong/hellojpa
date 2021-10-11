@@ -1,6 +1,7 @@
 package com.example.jpa.domain.main;
 
-import com.example.jpa.domain.relationship.*;
+import com.example.jpa.domain.relationship.A;
+import com.example.jpa.domain.relationship.B;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,33 +15,16 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        Parent parent = new Parent();
-        parent.setId("p_id");
-        parent.setName("parent");
-        em.persist(parent);
+        A a = new A();
+        a.setTitle("title");
+        em.persist(a);
 
-        ChildId childId = new ChildId();
-        childId.setId("child_id");
+        B b = new B();
+        b.setA(a);
+        b.setContent("content");
+        em.persist(b);
 
-        Child child = new Child();
-        child.setId(childId);
-        child.setParent(parent);
-        child.setName("child");
-        em.persist(child);
-
-        em.flush(); em.clear();
-
-        Child foundChild = em.find(Child.class, childId);
-
-        GrandChildId grandChildId = new GrandChildId();
-        grandChildId.setId("asd");
-
-        GrandChild grandChild = new GrandChild();
-        grandChild.setChild(foundChild);
-        grandChild.setId(grandChildId);
-
-        em.persist(grandChild);
-
+        System.out.println("(b.getA().getId() == a.getId()) = " + (b.getA().getId() == a.getId()));
 
         tx.commit();
         em.close();
