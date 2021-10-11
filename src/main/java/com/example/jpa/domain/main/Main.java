@@ -30,8 +30,16 @@ public class Main {
 
         em.flush(); em.clear();
 
-        Child found = em.find(Child.class, childId);
-        System.out.println(found);
+        Child foundChild = em.find(Child.class, childId);
+
+        GrandChildId grandChildId = new GrandChildId();
+        grandChildId.setId("asd");
+
+        GrandChild grandChild = new GrandChild();
+        grandChild.setChild(foundChild);
+        grandChild.setId(grandChildId);
+
+        em.persist(grandChild);
 
 
         tx.commit();

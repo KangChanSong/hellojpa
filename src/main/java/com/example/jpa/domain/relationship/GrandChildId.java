@@ -10,23 +10,23 @@ import java.util.Objects;
 
 @Getter @Setter
 @Embeddable
-public class ChildId implements Serializable {
+public class GrandChildId implements Serializable {
 
-    private String parentId;
+    private ChildId childId;
 
-    @Column(name = "child_id")
+    @Column(name = "grandchild_id")
     private String id;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChildId childId = (ChildId) o;
-        return Objects.equals(parentId, childId.parentId) && Objects.equals(id, childId.id);
+        GrandChildId that = (GrandChildId) o;
+        return Objects.equals(childId, that.childId) && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(parentId, id);
+        return Objects.hash(childId, id);
     }
 }
