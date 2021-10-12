@@ -21,15 +21,12 @@ public class EmbeddedTest {
         Member member = new Member();
         member.setName("member");
 
-        Address home = new Address();
-        home.setCity("city");
-        home.setStreet("street");
-        home.setZipcode("zcode");
+        Address home = new Address("city", "street", "zipcode");
 
-        Address company = new Address();
-        company.setCity("c_city");
-        company.setStreet("c_street");
-        company.setZipcode("c_zipcode");
+        Address company = new Address("c_ct", "c_strt", "c_zcode");
+
+        member.setHomeAddress(home);
+        member.setCompanyAddress(company);
 
         em.persist(member);
         tx.commit();
