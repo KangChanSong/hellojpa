@@ -2,8 +2,7 @@ package com.example.jpa.repository.criteria;
 
 import com.example.jpa.domain.Address;
 import com.example.jpa.domain.Member;
-import com.example.jpa.domain.Order;
-import com.example.jpa.domain.Team;
+import com.example.jpa.domain.dto.Aggregate;
 import com.example.jpa.domain.dto.UserDto;
 import com.example.jpa.main.Main;
 
@@ -11,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Test {
     public static void main(String[] args) {
@@ -64,5 +62,18 @@ public class Test {
         resultList.forEach(member -> {
             System.out.println("member = " + member.getAge());
         });
+    }
+
+    private void useAggregateFunction(EntityManager em){
+        TypedQuery<Aggregate> query = em.createQuery(
+                "select new com.example.jpa.domain.dto.Aggregate(count (m), sum(m.age), avg(m.age), max(m.age), min(m.age)) " +
+                        "from Member m",Aggregate.class);
+        Aggregate aggregate = query.getSingleResult();
+
+        System.out.println("aggregate.getCount() = " + aggregate.getCount());
+        System.out.println("aggregate.getSum() = " + aggregate.getSum());
+        System.out.println("aggregate.getAvg() = " + aggregate.getAvg());
+        System.out.println("aggregate.getMax() = " + aggregate.getMax());
+        System.out.println("aggregate.getMin() = " + aggregate.getMin());
     }
 }
