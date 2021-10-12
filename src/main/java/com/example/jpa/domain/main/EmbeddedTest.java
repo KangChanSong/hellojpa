@@ -18,11 +18,20 @@ public class EmbeddedTest {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        Member member = em.find(Member.class, 1L);
-        member.setHomeAddress(null);
-        member.setWorkPeriod(null);
+        Member member = new Member();
+        member.setName("member");
 
+        Address home = new Address();
+        home.setCity("city");
+        home.setStreet("street");
+        home.setZipcode("zcode");
 
+        Address company = new Address();
+        company.setCity("c_city");
+        company.setStreet("c_street");
+        company.setZipcode("c_zipcode");
+
+        em.persist(member);
         tx.commit();
         em.close();
         emf.close();
