@@ -1,29 +1,23 @@
 package com.example.jpa.domain;
 
-import com.example.jpa.domain.superclass.BaseEntity;
-import com.example.jpa.domain.valueType.Address;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.dialect.InnoDBStorageEngine;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter @Setter
 @Entity
-public class Member extends BaseEntity {
+public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    private String name;
+    private String username;
+    private int age;
 
-    @Embedded
-    private Address address;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders = new ArrayList<>();
-
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 }
-
