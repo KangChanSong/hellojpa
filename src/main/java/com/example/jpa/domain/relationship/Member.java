@@ -1,5 +1,7 @@
 package com.example.jpa.domain.relationship;
 
+import com.example.jpa.domain.relationship.embedded.Address;
+import com.example.jpa.domain.relationship.embedded.Period;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +18,12 @@ public class Member extends BaseEntity {
     private Long id;
 
     private String name;
-    private String city;
-    private String street;
-    private String zipcode;
+
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
