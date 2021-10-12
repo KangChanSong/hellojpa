@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Getter @Setter
 @Entity
+@Table(name = "orders")
 @SequenceGenerator(name = "seq_order_gen" , sequenceName = "seq_order")
 public class Order {
 

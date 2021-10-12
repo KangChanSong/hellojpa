@@ -1,9 +1,11 @@
 package com.example.jpa.domain;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.Embeddable;
 
+@ToString
 @Getter
 @Embeddable
 public class Address {

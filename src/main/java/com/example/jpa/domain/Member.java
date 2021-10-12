@@ -2,7 +2,6 @@ package com.example.jpa.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.dialect.InnoDBStorageEngine;
 
 import javax.persistence.*;
 
