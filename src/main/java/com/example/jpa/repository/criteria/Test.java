@@ -15,18 +15,9 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         Main.main(em -> {
-            // 현재 team 은 하나, Member 는 100개
-            // 아래 쿼리 실행시 List<Team>.size() 가 100임
-            // DISTINCT 를 사용하면 데이터베이스에 DISTINCT 쿼리를 날리고
-            // 또 애플리케이션에서 중복을 제거함
-            // 그래서 Team 을 백개 가져온 후 DISTINCT 로 애플리케이션에서 하나만 남김.
-            TypedQuery<Team> query = em.createQuery("select t from Team t join fetch t.members", Team.class);
-            List<Team> team = query.getResultList();
-            System.out.println("DISTINCT 사용 안할 시 team.size() = " + team.size());
+            // 단일 값 연관 필드로 경로 탐색을 하면 SQL에서 내부조인이 묵시적으로 일어난다.
+            List<Member> members = em.createQuery("select o.member from Order o", Member.class).getResultList();
 
-            TypedQuery<Team> query1 = em.createQuery("select distinct t from Team t join fetch t.members", Team.class);
-            List<Team> team1 = query1.getResultList();
-            System.out.println("DISTINCT 사용 시 team.size() = " + team1.size());
         });
     }
 
@@ -87,5 +78,20 @@ public class Test {
         System.out.println("aggregate.getAvg() = " + aggregate.getAvg());
         System.out.println("aggregate.getMax() = " + aggregate.getMax());
         System.out.println("aggregate.getMin() = " + aggregate.getMin());
+    }
+
+    private void useDistinct(EntityManager em){
+        // 현재 team 은 하나, Member 는 100개
+        // 아래 쿼리 실행시 List<Team>.size() 가 100임
+        // DISTINCT 를 사용하면 데이터베이스에 DISTINCT 쿼리를 날리고
+        // 또 애플리케이션에서 중복을 제거함
+        // 그래서 Team 을 백개 가져온 후 DISTINCT 로 애플리케이션에서 하나만 남김.
+        TypedQuery<Team> query = em.createQuery("select t from Team t join fetch t.members", Team.class);
+        List<Team> team = query.getResultList();
+        System.out.println("DISTINCT 사용 안할 시 team.size() = " + team.size());
+
+        TypedQuery<Team> query1 = em.createQuery("select distinct t from Team t join fetch t.members", Team.class);
+        List<Team> team1 = query1.getResultList();
+        System.out.println("DISTINCT 사용 시 team.size() = " + team1.size());
     }
 }
