@@ -15,14 +15,15 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         Main.main(em -> {
+            // 컬렉션 식 (is empty, member of)
+            List<Member> members =
+                    em.createQuery("select m from Member m where m.orders is not empty ", Member.class).getResultList();
+            System.out.println("members.size() = " + members.size()); // 1
 
-            // JPQL 에서는 WHERE, HAVING 절에서만 서브쿼리 사용 가능
-            // EXISTS, ANY, ALL, IN 절에 서브쿼리 사용 가능
-            TypedQuery<Member> query = em.createQuery("select m from Member m where m.age > (select  avg(m2.age) from Member m2)", Member.class);
-            List<Member> members = query.getResultList();
-            members.forEach(member -> {
-                System.out.println("member.getAge() = " + member.getAge());
-            });
+            List<Team> team = em.createQuery("select t from Team t where :memberParam member of t.members", Team.class)
+                    .setParameter("memberParam", members.get(0))
+                    .getResultList();
+            System.out.println("team.size() = " + team.size());
 
         });
     }
@@ -105,5 +106,15 @@ public class Test {
         // 단일 값 연관 필드로 경로 탐색을 하면 SQL에서 내부조인이 묵시적으로 일어난다.
         List<Member> members = em.createQuery("select o.member from Order o", Member.class).getResultList();
         members.get(0).getTeam();
+    }
+
+    private void useSubquery(EntityManager em){
+        // JPQL 에서는 WHERE, HAVING 절에서만 서브쿼리 사용 가능
+        // EXISTS, ANY, ALL, IN 절에 서브쿼리 사용 가능
+        TypedQuery<Member> query = em.createQuery("select m from Member m where m.age > (select  avg(m2.age) from Member m2)", Member.class);
+        List<Member> members = query.getResultList();
+        members.forEach(member -> {
+            System.out.println("member.getAge() = " + member.getAge());
+        });
     }
 }
