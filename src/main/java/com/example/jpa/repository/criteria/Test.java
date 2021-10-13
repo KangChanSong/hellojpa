@@ -15,15 +15,14 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         Main.main(em -> {
-            // 컬렉션 식 (is empty, member of)
-            List<Member> members =
-                    em.createQuery("select m from Member m where m.orders is not empty ", Member.class).getResultList();
-            System.out.println("members.size() = " + members.size()); // 1
-
-            List<Team> team = em.createQuery("select t from Team t where :memberParam member of t.members", Team.class)
-                    .setParameter("memberParam", members.get(0))
+            List<Member> members = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "member10")
                     .getResultList();
-            System.out.println("team.size() = " + team.size());
+
+            System.out.println("members.size() = " + members.size());
+
+            Integer count = em.createNamedQuery("Member.count", Integer.class).getSingleResult();
+            System.out.println("count = " + count);
 
         });
     }
@@ -116,5 +115,18 @@ public class Test {
         members.forEach(member -> {
             System.out.println("member.getAge() = " + member.getAge());
         });
+    }
+
+
+    private void useCollectionOperation(EntityManager em){
+        // 컬렉션 식 (is empty, member of)
+        List<Member> members =
+                em.createQuery("select m from Member m where m.orders is not empty ", Member.class).getResultList();
+        System.out.println("members.size() = " + members.size()); // 1
+
+        List<Team> team = em.createQuery("select t from Team t where :memberParam member of t.members", Team.class)
+                .setParameter("memberParam", members.get(0))
+                .getResultList();
+        System.out.println("team.size() = " + team.size());
     }
 }
