@@ -15,8 +15,14 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         Main.main(em -> {
-            // 단일 값 연관 필드로 경로 탐색을 하면 SQL에서 내부조인이 묵시적으로 일어난다.
-            List<Member> members = em.createQuery("select o.member from Order o", Member.class).getResultList();
+
+            // JPQL 에서는 WHERE, HAVING 절에서만 서브쿼리 사용 가능
+            // EXISTS, ANY, ALL, IN 절에 서브쿼리 사용 가능
+            TypedQuery<Member> query = em.createQuery("select m from Member m where m.age > (select  avg(m2.age) from Member m2)", Member.class);
+            List<Member> members = query.getResultList();
+            members.forEach(member -> {
+                System.out.println("member.getAge() = " + member.getAge());
+            });
 
         });
     }
@@ -88,10 +94,16 @@ public class Test {
         // 그래서 Team 을 백개 가져온 후 DISTINCT 로 애플리케이션에서 하나만 남김.
         TypedQuery<Team> query = em.createQuery("select t from Team t join fetch t.members", Team.class);
         List<Team> team = query.getResultList();
-        System.out.println("DISTINCT 사용 안할 시 team.size() = " + team.size());
+        System.out.println("DISTINCT 사용 안할 시 team.size() = " + team.size()); // 100
 
         TypedQuery<Team> query1 = em.createQuery("select distinct t from Team t join fetch t.members", Team.class);
         List<Team> team1 = query1.getResultList();
-        System.out.println("DISTINCT 사용 시 team.size() = " + team1.size());
+        System.out.println("DISTINCT 사용 시 team.size() = " + team1.size()); // 1
+    }
+
+    private void useSingleAssociatedValue(EntityManager em){
+        // 단일 값 연관 필드로 경로 탐색을 하면 SQL에서 내부조인이 묵시적으로 일어난다.
+        List<Member> members = em.createQuery("select o.member from Order o", Member.class).getResultList();
+        members.get(0).getTeam();
     }
 }
