@@ -15,19 +15,18 @@ import java.util.List;
 public class HibernateEx {
     public static void main(String[] args) {
         Main.main(em -> {
-            List<Member> members = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "member10")
-                    .getResultList();
 
-            System.out.println("members.size() = " + members.size());
-
-            Integer count = em.createNamedQuery("Member.count", Integer.class).getSingleResult();
-            System.out.println("count = " + count);
+            //벌크연산
+            // 영속성 컨텍스트를 무시하고 DB에 직접 쿼리
+            em.createQuery("update Member m set m.username =: username where m.age < :age")
+                    .setParameter("username", "Im user")
+                    .setParameter("age", 50)
+                    .executeUpdate();
 
         });
     }
 
-    private void useTypedQuery(EntityManager em){
+    private static void useTypedQuery(EntityManager em){
 
         TypedQuery<Member> typedQuery = em.createQuery("select m from Member as m", Member.class);
 
@@ -128,5 +127,16 @@ public class HibernateEx {
                 .setParameter("memberParam", members.get(0))
                 .getResultList();
         System.out.println("team.size() = " + team.size());
+    }
+
+    private static void useNamedQuery(EntityManager em){
+        List<Member> members = em.createNamedQuery("Member.findByUsername", Member.class)
+                .setParameter("username", "member10")
+                .getResultList();
+
+        System.out.println("members.size() = " + members.size());
+
+        Integer count = em.createNamedQuery("Member.count", Integer.class).getSingleResult();
+        System.out.println("count = " + count);
     }
 }
