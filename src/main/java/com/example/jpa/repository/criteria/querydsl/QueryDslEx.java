@@ -1,4 +1,4 @@
-package com.example.jpa.repository.criteria;
+package com.example.jpa.repository.criteria.querydsl;
 
 import com.example.jpa.domain.Member;
 import com.example.jpa.domain.QMember;
