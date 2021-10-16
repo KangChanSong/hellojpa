@@ -12,7 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class Test {
+public class HibernateEx {
     public static void main(String[] args) {
         Main.main(em -> {
             List<Member> members = em.createNamedQuery("Member.findByUsername", Member.class)
