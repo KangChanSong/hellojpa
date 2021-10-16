@@ -3,6 +3,9 @@
 
     <!--DB당 하나-->
     <persistence-unit name="hello">
+
+        <mapping-file>META-INF/ormMember.xml</mapping-file>
+
         <properties>
             <!--필수-->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

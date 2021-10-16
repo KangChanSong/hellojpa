@@ -9,16 +9,16 @@ import java.util.List;
 
 @Getter @Setter
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "Member.findByUsername",
-                query = "select m from Member m where m.username =: username"
-        ),
-        @NamedQuery(
-                name = "Member.count",
-                query = "select count(m) from Member m"
-        )
-})
+//@NamedQueries({
+//        @NamedQuery(
+//                name = "Member.findByUsername",
+//                query = "select m from Member m where m.username =: username"
+//        ),
+//        @NamedQuery(
+//                name = "Member.count",
+//                query = "select count(m) from Member m"
+//        )
+//})
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
