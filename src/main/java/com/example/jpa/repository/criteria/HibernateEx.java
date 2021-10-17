@@ -15,13 +15,19 @@ import java.util.List;
 public class HibernateEx {
     public static void main(String[] args) {
         Main.main(em -> {
+            Member member = em.createQuery("select m from Member m where m.username = :username", Member.class)
+                    .setParameter("username", "아저씨")
+                    .getResultList().get(0);
 
-            //벌크연산
-            // 영속성 컨텍스트를 무시하고 DB에 직접 쿼리
-            em.createQuery("update Member m set m.username =: username where m.age < :age")
-                    .setParameter("username", "Im user")
-                    .setParameter("age", 50)
+            System.out.println("member.getAge() = " + member.getAge());
+
+            em.createQuery("update Member m set m.age = 20 where m.username =: username")
+                    .setParameter("username", "아저씨")
                     .executeUpdate();
+
+            em.refresh(member);
+            System.out.println("member.getAge() = " + member.getAge());
+
 
         });
     }
@@ -138,5 +144,14 @@ public class HibernateEx {
 
         Integer count = em.createNamedQuery("Member.count", Integer.class).getSingleResult();
         System.out.println("count = " + count);
+    }
+
+    private static void bulk(EntityManager em){
+        //벌크연산
+        // 영속성 컨텍스트를 무시하고 DB에 직접 쿼리
+        em.createQuery("update Member m set m.username = '아저씨' where m.age > :age")
+                .setParameter("age", 50)
+                .executeUpdate();
+
     }
 }
