@@ -11,21 +11,35 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Objects;
 
 public class HibernateEx {
     public static void main(String[] args) {
         Main.main(em -> {
+
             Member member1 = em.find(Member.class, 1L);
-            String member1Ref = member1.toString();
 
-            em.refresh(member1);
+            Member clone = cloneMember(member1);
 
-            String member1Ref2 = member1.toString();
-
-            System.out.println("member1Ref = " + member1Ref);
-            System.out.println("member1Ref2 = " + member1Ref2);
+            em.createQuery("update Member m set m.username =: username where m.id =1")
+                    .setParameter("username", "newnew")
+                    .executeUpdate();
             
+
+            Member member2 = em.createQuery("select m from Member m where m.id = 1", Member.class)
+                    .getSingleResult();
+
+            System.out.println("clone.getUsername() = " + clone.getUsername()); // old
+            System.out.println("member2.getUsername() = " + member2.getUsername()); // new
+
         });
+    }
+
+    private static Member cloneMember(Member member){
+        Member m = new Member();
+        m.setUsername(member.getUsername());
+        m.setAge(member.getAge());
+        return m;
     }
 
     private static void useTypedQuery(EntityManager em){
