@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@NamedEntityGraph(name = "Order.withMember", attributeNodes = {
+        @NamedAttributeNode("member")
+})
 @Entity
 @Table(name = "ORDERS")
 public class Order {
