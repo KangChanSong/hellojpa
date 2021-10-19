@@ -1,6 +1,7 @@
 package com.example.jpashop.etc;
 
 import com.example.jpashop.domain.Member;
+import com.example.jpashop.domain.Order;
 import com.example.jpashop.domain.OrderItem;
 import com.example.jpashop.domain.item.Book;
 import com.example.jpashop.domain.item.Item;
@@ -17,6 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -177,5 +181,50 @@ public class EntityManagerLifeCycleTest {
         System.out.println("============== 원본 획득 ============");
         Member sample = em.find(Member.class, member.getId());
         assertTrue(sample.getClass() == Member.class);
+    }
+
+    @Transactional
+    @Test
+    public void N_플러스_1_테스트(){
+        //given
+        // JPQL 은 "독립적으로" SQL로 해석되어 실행된다.
+        // 10개의 멤버를 모두 가져오고, orders 가 즉시로딩으로 설정되어 있는 것을 확인 후 orders 를 조회하는 쿼리를 날리기 시작한다.
+
+        IntStream.range(1, 10).forEach(i -> {
+            Member member = new Member();
+            member.setName("name" + 1);
+            em.persist(member);
+        });
+
+        em.flush();
+        em.clear();
+        //when
+        em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+
+    }
+
+    @Transactional
+    @Test
+    public void N_플러스_1_테스트_2(){
+        //given
+        IntStream.range(1, 10).forEach(i -> {
+            Member member = new Member();
+            member.setName("name" + 1);
+            em.persist(member);
+            Order order = new Order();
+            order.setMember(member);
+            em.persist(order);
+        });
+
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> members = em.createQuery("select m from Member m", Member.class)
+                .getResultList();
+
+        members.forEach(m -> m.getOrders().get(0).getTotalPrice());
+
     }
 }
