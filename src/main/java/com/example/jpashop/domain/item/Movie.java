@@ -1,5 +1,7 @@
 package com.example.jpashop.domain.item;
 
+import com.example.jpashop.domain.visitors.Visitor;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -32,5 +34,9 @@ public class Movie extends Item {
                 "director='" + director + '\'' +
                 ", actor='" + actor + '\'' +
                 '}';
+    }
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

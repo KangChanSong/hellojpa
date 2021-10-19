@@ -2,6 +2,7 @@ package com.example.jpashop.domain.item;
 
 
 import com.example.jpashop.domain.Category;
+import com.example.jpashop.domain.visitors.Visitor;
 import com.example.jpashop.exception.NotEnoughStockException;
 
 import javax.persistence.*;
@@ -87,4 +88,6 @@ public abstract class Item {
                 ", price=" + price +
                 '}';
     }
+
+    public abstract void accept(Visitor visitor);
 }

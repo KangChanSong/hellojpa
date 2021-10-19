@@ -1,6 +1,8 @@
 package com.example.jpashop.domain.item;
 
 
+import com.example.jpashop.domain.visitors.Visitor;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -39,5 +41,10 @@ public class Album extends Item {
                 "artist='" + artist + '\'' +
                 ", etc='" + etc + '\'' +
                 '}';
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }

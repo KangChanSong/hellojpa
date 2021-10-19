@@ -3,6 +3,7 @@ package com.example.jpashop.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Member {
@@ -60,5 +61,23 @@ public class Member {
                 ", name='" + name + '\'' +
                 ", address=" + address +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Member)) return false;
+        Member member = (Member) o;
+
+        if(name != null ? !name.equals(member.getName()) : member.getName() != null){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, orders);
     }
 }

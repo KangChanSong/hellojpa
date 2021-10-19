@@ -1,5 +1,7 @@
 package com.example.jpashop.domain.item;
 
+import com.example.jpashop.domain.visitors.Visitor;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -34,5 +36,9 @@ public class Book extends Item {
     @Override
     public String toString() {
         return "Book{}";
+    }
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 }
